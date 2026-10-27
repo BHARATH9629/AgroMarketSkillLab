@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgroMarket – Smart Agricultural Marketplace Portal</title>
+
+  <!-- Google Fonts: Poppins + Playfair Display -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ========== LOADER ========== -->
+  <div id="loader">
+    <div class="loader-inner">
+      <div class="loader-leaf"><i class="fas fa-leaf"></i></div>
+      <p>AgroMarket</p>
+    </div>
+  </div>
+
+  <!-- ========== NAVBAR ========== -->
+  <nav id="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <i class="fas fa-seedling"></i>
+        <span>Agro<strong>Market</strong></span>
+      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#hero" class="nav-link active" data-i18n="nav_home">Home</a></li>
+        <li><a href="#features" class="nav-link" data-i18n="nav_features">Features</a></li>
+        <li><a href="#marketplace" class="nav-link" data-i18n="nav_marketplace">Marketplace</a></li>
+        <li><a href="#dashboard" class="nav-link" data-i18n="nav_dashboard">Dashboard</a></li>
+        <li><a href="#contact" class="nav-link" data-i18n="nav_contact">Contact</a></li>
+        <li><a href="/admin" target="_blank" class="nav-link" data-i18n="nav_admin" style="color:#2563eb;font-weight:700;"><i class="fas fa-shield-halved"></i> Admin</a></li>
+      </ul>
+      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+        <!-- Language Switcher Toggle -->
+        <div class="lang-switch-wrap" id="langSwitchWrap" style="display:inline-flex;align-items:center;background:#f0fdf4;border:1.5px solid #86efac;border-radius:50px;padding:2px;font-family:'Poppins',sans-serif;">
+          <button id="langBtnEn" onclick="setLanguage('en')" title="Switch to English"
+            style="background:#16a34a;color:#fff;border:none;border-radius:50px;padding:3px 9px;font-size:0.72rem;font-weight:700;cursor:pointer;transition:all 0.2s;">EN</button>
+          <button id="langBtnKn" onclick="setLanguage('kn')" title="ಕನ್ನಡಕ್ಕೆ ಬದಲಿಸಿ"
+            style="background:transparent;color:#166534;border:none;border-radius:50px;padding:3px 9px;font-size:0.72rem;font-weight:700;cursor:pointer;transition:all 0.2s;">ಕನ್ನಡ</button>
+        </div>
+        <div class="nav-cta">
+          <a href="#marketplace" class="btn-nav" data-i18n="btn_browse">Browse Market</a>
+        </div>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ========== HERO SECTION ========== -->
+  <section id="hero">
+    <!-- Animated background blobs -->
+    <div class="hero-blob blob-1"></div>
+    <div class="hero-blob blob-2"></div>
+    <div class="hero-blob blob-3"></div>
+
+    <!-- Floating particles -->
+    <div class="particles" id="particles"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge reveal" data-i18n="hero_badge">
+        <i class="fas fa-award"></i> India's #1 Agri-Tech Marketplace
+      </div>
+      <h1 class="hero-title reveal" data-i18n="hero_title">
+        Smart Agricultural<br />
+        <span class="gradient-text">Marketplace Portal</span>
+      </h1>
+      <p class="hero-sub reveal" data-i18n="hero_sub">
+        Connecting <strong>Farmers</strong>, <strong>Buyers</strong>, and <strong>Distributors</strong> Digitally —
+        a unified ecosystem that empowers every link in the agricultural chain.
+      </p>
+      <div class="hero-buttons reveal">
+        <a href="#features" class="btn-primary" data-i18n="hero_get_started">
+          <i class="fas fa-rocket"></i> Get Started
+        </a>
+        <a href="#marketplace" class="btn-outline" data-i18n="hero_explore">
+          <i class="fas fa-store"></i> Explore Products
+        </a>
+      </div>
+      <div class="hero-stats reveal">
+        <div class="stat">
+          <span class="stat-num" data-target="12000">0</span><span>+</span>
+          <p data-i18n="stat_farmers">Farmers</p>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-num" data-target="3400">0</span><span>+</span>
+          <p data-i18n="stat_buyers">Buyers</p>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-num" data-target="850">0</span><span>+</span>
+          <p data-i18n="stat_distributors">Distributors</p>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-num" data-target="98">0</span><span>%</span>
+          <p data-i18n="stat_satisfaction">Satisfaction</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-image-wrap reveal">
+      <div class="hero-img-card">
+        <img src="https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?w=600&q=80" alt="Smart Farming" />
+        <div class="img-badge live">
+          <span class="pulse-dot"></span> Live Market
+        </div>
+        <div class="img-badge price">
+          <i class="fas fa-tags"></i> Best Prices
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-indicator">
+      <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
+      <p>Scroll to explore</p>
+    </div>
+  </section>
+
+  <!-- ========== MARQUEE STRIP ========== -->
+  <div class="marquee-strip">
+    <div class="marquee-track">
+      <span data-i18n="mq_organic"><i class="fas fa-leaf"></i> Organic Farming</span>
+      <span data-i18n="mq_modern"><i class="fas fa-tractor"></i> Modern Agriculture</span>
+      <span data-i18n="mq_direct"><i class="fas fa-handshake"></i> Direct Trade</span>
+      <span data-i18n="mq_ai"><i class="fas fa-chart-line"></i> AI Price Prediction</span>
+      <span data-i18n="mq_gps"><i class="fas fa-map-marker-alt"></i> GPS Logistics</span>
+      <span data-i18n="mq_secure"><i class="fas fa-shield-alt"></i> Secure Payments</span>
+      <span data-i18n="mq_organic"><i class="fas fa-leaf"></i> Organic Farming</span>
+      <span data-i18n="mq_modern"><i class="fas fa-tractor"></i> Modern Agriculture</span>
+      <span data-i18n="mq_direct"><i class="fas fa-handshake"></i> Direct Trade</span>
+      <span data-i18n="mq_ai"><i class="fas fa-chart-line"></i> AI Price Prediction</span>
+      <span data-i18n="mq_gps"><i class="fas fa-map-marker-alt"></i> GPS Logistics</span>
+      <span data-i18n="mq_secure"><i class="fas fa-shield-alt"></i> Secure Payments</span>
+    </div>
+  </div>
+
+  <!-- ========== FEATURES SECTION ========== -->
+  <section id="features">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag" data-i18n="feat_tag">What We Offer</span>
+        <h2 data-i18n="feat_heading">Powerful Features for <span class="gradient-text">Every Stakeholder</span></h2>
+        <p data-i18n="feat_subheading">Purpose-built modules that serve farmers, buyers, and distributors with equal precision.</p>
+      </div>
+
+      <div class="features-grid">
+
+        <div class="feature-card reveal" style="--card-color:#22c55e;">
+          <div class="feature-icon-wrap">
+            <i class="fas fa-boxes-stacked"></i>
+          </div>
+          <h3 data-i18n="feat_listing_title">Product Listing Module</h3>
+          <p data-i18n="feat_listing_desc">Farmers can effortlessly list crops, set prices, upload images, and manage availability in real-time with a guided, mobile-friendly interface.</p>
+          <div class="feature-footer">
+            <span class="feature-tag">Farmers</span>
+            <i class="fas fa-arrow-right"></i>
+          </div>
+        </div>
+
+        <div class="feature-card reveal" style="--card-color:#f59e0b;">
+          <div class="feature-icon-wrap">
+            <i class="fas fa-comments"></i>
+          </div>
+          <h3 data-i18n="feat_comm_title">Buyer-Seller Communication</h3>
+          <p data-i18n="feat_comm_desc">Integrated real-time messaging with notifications, image sharing, and negotiation tools — no phone calls or middlemen needed.</p>
+          <div class="feature-footer">
+            <span class="feature-tag">All Users</span>
+            <i class="fas fa-arrow-right"></i>
+          </div>
+        </div>
+
+        <div class="feature-card reveal" style="--card-color:#3b82f6;">
+          <div class="feature-icon-wrap">
+            <i class="fas fa-clipboard-list"></i>
+          </div>
+          <h3 data-i18n="feat_order_title">Order Management</h3>
+          <p data-i18n="feat_order_desc">Track every order from placement to delivery. Automated status updates, invoice generation, and dispute resolution built in.</p>
+          <div class="feature-footer">
+            <span class="feature-tag">Buyers</span>
+            <i class="fas fa-arrow-right"></i>
+          </div>
+        </div>
+
+        <div class="feature-card reveal" style="--card-color:#a855f7;">
+          <div class="feature-icon-wrap">
+            <i class="fas fa-credit-card"></i>
+          </div>
+          <h3 data-i18n="feat_payment_title">Payment Integration</h3>
+          <p data-i18n="feat_payment_desc">Simulated UPI, card, and wallet payment flows. Escrow-based secure transactions ensuring farmers get paid before dispatch.</p>
+          <div class="feature-footer">
+            <span class="feature-tag">Secure</span>
+            <i class="fas fa-arrow-right"></i>
+          </div>
+        </div>
+
+        <div class="feature-card reveal" style="--card-color:#ef4444;">
+          <div class="feature-icon-wrap">
+            <i class="fas fa-database"></i>
+          </div>
+          <h3 data-i18n="feat_db_title">Database Support</h3>
+          <p data-i18n="feat_db_desc">Relational database architecture with full CRUD operations, audit logs, role-based access, and automated data backups.</p>
+          <div class="feature-footer">
+            <span class="feature-tag">Backend</span>
+            <i class="fas fa-arrow-right"></i>
+          </div>
+        </div>
+
+        <div class="feature-card reveal" style="--card-color:#14b8a6;">
+          <div class="feature-icon-wrap">
+            <i class="fas fa-shield-halved"></i>
+          </div>
+          <h3 data-i18n="feat_auth_title">Smart Authentication</h3>
+          <p data-i18n="feat_auth_desc">Role-based login for Farmers, Buyers, and Distributors. OTP verification and multi-factor authentication for security.</p>
+          <div class="feature-footer">
+            <span class="feature-tag">Security</span>
+            <i class="fas fa-arrow-right"></i>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== MARKETPLACE SECTION ========== -->
+  <section id="marketplace">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag" data-i18n="market_tag">Live Marketplace</span>
+        <h2 data-i18n="market_heading">Fresh Products <span class="gradient-text">Direct from Farms</span></h2>
+        <p data-i18n="market_subheading">Browse hundreds of agricultural products listed by verified farmers across the country.</p>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="market-filters reveal">
+        <button class="filter-btn active" data-filter="all" data-i18n="filter_all">All Products</button>
+        <button class="filter-btn" data-filter="grains" data-i18n="filter_grains">Grains</button>
+        <button class="filter-btn" data-filter="vegetables" data-i18n="filter_veg">Vegetables</button>
+        <button class="filter-btn" data-filter="fruits" data-i18n="filter_fruits">Fruits</button>
+        <button class="filter-btn" data-filter="organic" data-i18n="filter_organic">Organic</button>
+      </div>
+
+      <div class="products-grid">
+
+        <div class="product-card reveal" data-category="grains">
+          <div class="product-img-wrap">
+            <img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&q=80" alt="Rice" loading="lazy" />
+            <span class="product-badge available">In Stock</span>
+            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+          </div>
+          <div class="product-info">
+            <div class="product-meta">
+              <span class="product-category"><i class="fas fa-seedling"></i> Grains</span>
+              <div class="product-rating">
+                <i class="fas fa-star"></i> 4.8
+              </div>
+            </div>
+            <h3>Premium Basmati Rice</h3>
+            <p class="product-seller"><i class="fas fa-user-tie"></i> Ramesh Kumar, Punjab</p>
+            <div class="product-bottom">
+              <div class="product-price">
+                <span class="price">₹ 62<small>/kg</small></span>
+                <span class="old-price">₹ 75</span>
+              </div>
+              <button class="btn-view">View Details</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card reveal" data-category="grains">
+          <div class="product-img-wrap">
+            <img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&q=80" alt="Wheat" loading="lazy" />
+            <span class="product-badge available">In Stock</span>
+            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+          </div>
+          <div class="product-info">
+            <div class="product-meta">
+              <span class="product-category"><i class="fas fa-seedling"></i> Grains</span>
+              <div class="product-rating"><i class="fas fa-star"></i> 4.6</div>
+            </div>
+            <h3>Sharbati Wheat</h3>
+            <p class="product-seller"><i class="fas fa-user-tie"></i> Suresh Patel, MP</p>
+            <div class="product-bottom">
+              <div class="product-price">
+                <span class="price">₹ 28<small>/kg</small></span>
+                <span class="old-price">₹ 35</span>
+              </div>
+              <button class="btn-view">View Details</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card reveal" data-category="vegetables">
+          <div class="product-img-wrap">
+            <img src="https://images.unsplash.com/photo-1607305387299-a3d9611cd469?w=400&q=80" alt="Tomatoes" loading="lazy" />
+            <span class="product-badge fresh">Fresh Today</span>
+            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+          </div>
+          <div class="product-info">
+            <div class="product-meta">
+              <span class="product-category"><i class="fas fa-carrot"></i> Vegetables</span>
+              <div class="product-rating"><i class="fas fa-star"></i> 4.9</div>
+            </div>
+            <h3>Farm Fresh Tomatoes</h3>
+            <p class="product-seller"><i class="fas fa-user-tie"></i> Anita Reddy, AP</p>
+            <div class="product-bottom">
+              <div class="product-price">
+                <span class="price">₹ 18<small>/kg</small></span>
+                <span class="old-price">₹ 24</span>
+              </div>
+              <button class="btn-view">View Details</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card reveal" data-category="vegetables">
+          <div class="product-img-wrap">
+            <img src="https://images.unsplash.com/photo-1518977676405-7571-5f22db2d94da?w=400&q=80" alt="Potatoes" loading="lazy" />
+            <span class="product-badge available">In Stock</span>
+            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+          </div>
+          <div class="product-info">
+            <div class="product-meta">
+              <span class="product-category"><i class="fas fa-carrot"></i> Vegetables</span>
+              <div class="product-rating"><i class="fas fa-star"></i> 4.5</div>
+            </div>
+            <h3>Agra Red Potatoes</h3>
+            <p class="product-seller"><i class="fas fa-user-tie"></i> Mohan Singh, UP</p>
+            <div class="product-bottom">
+              <div class="product-price">
+                <span class="price">₹ 22<small>/kg</small></span>
+                <span class="old-price">₹ 30</span>
+              </div>
+              <button class="btn-view">View Details</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card reveal" data-category="fruits">
+          <div class="product-img-wrap">
+            <img src="https://images.unsplash.com/photo-1519996529931-28324d5a630e?w=400&q=80" alt="Fruits" loading="lazy" />
+            <span class="product-badge fresh">Seasonal</span>
+            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+          </div>
+          <div class="product-info">
+            <div class="product-meta">
+              <span class="product-category"><i class="fas fa-apple-whole"></i> Fruits</span>
+              <div class="product-rating"><i class="fas fa-star"></i> 4.7</div>
+            </div>
+            <h3>Alphonso Mangoes</h3>
+            <p class="product-seller"><i class="fas fa-user-tie"></i> Priya Joshi, MH</p>
+            <div class="product-bottom">
+              <div class="product-price">
+                <span class="price">₹ 180<small>/dz</small></span>
+                <span class="old-price">₹ 240</span>
+              </div>
+              <button class="btn-view">View Details</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card reveal" data-category="organic">
+          <div class="product-img-wrap">
+            <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400&q=80" alt="Organic Vegetables" loading="lazy" />
+            <span class="product-badge organic">Certified Organic</span>
+            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+          </div>
+          <div class="product-info">
+            <div class="product-meta">
+              <span class="product-category"><i class="fas fa-leaf"></i> Organic</span>
+              <div class="product-rating"><i class="fas fa-star"></i> 5.0</div>
+            </div>
+            <h3>Mixed Organic Veggies</h3>
+            <p class="product-seller"><i class="fas fa-user-tie"></i> GreenFarm Co., KA</p>
+            <div class="product-bottom">
+              <div class="product-price">
+                <span class="price">₹ 95<small>/kg</small></span>
+                <span class="old-price">₹ 120</span>
+              </div>
+              <button class="btn-view">View Details</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="market-cta reveal">
+        <a href="#contact" class="btn-primary" data-i18n="market_view_all">
+          <i class="fas fa-store"></i> View All Products
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== DASHBOARD SECTION ========== -->
+  <section id="dashboard">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag" data-i18n="dash_tag">Admin Console</span>
+        <h2 data-i18n="dash_heading">Powerful <span class="gradient-text">Dashboard Analytics</span></h2>
+        <p data-i18n="dash_sub">A bird's eye view of the entire marketplace ecosystem with real-time data.</p>
+      </div>
+
+      <div class="dashboard-wrap reveal">
+        <!-- Sidebar -->
+        <aside class="dash-sidebar">
+          <div class="dash-logo">
+            <i class="fas fa-seedling"></i>
+            <span>AgroMarket</span>
+          </div>
+          <nav class="dash-nav">
+            <a href="#" class="dash-link active"><i class="fas fa-th-large"></i> Overview</a>
+            <a href="#" class="dash-link"><i class="fas fa-users"></i> Farmers</a>
+            <a href="#" class="dash-link"><i class="fas fa-shopping-cart"></i> Orders</a>
+            <a href="#" class="dash-link"><i class="fas fa-boxes-stacked"></i> Products</a>
+            <a href="#" class="dash-link"><i class="fas fa-chart-bar"></i> Analytics</a>
+            <a href="#" class="dash-link"><i class="fas fa-truck"></i> Logistics</a>
+            <a href="#" class="dash-link"><i class="fas fa-cog"></i> Settings</a>
+          </nav>
+        </aside>
+
+        <!-- Main Dashboard Content -->
+        <main class="dash-main">
+          <!-- KPI Cards -->
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:linear-gradient(135deg,#22c55e,#16a34a);">
+                <i class="fas fa-shopping-bag"></i>
+              </div>
+              <div class="kpi-data">
+                <span class="kpi-num" data-target="8452">0</span>
+                <p data-i18n="kpi_total_orders">Total Orders</p>
+                <span class="kpi-trend up"><i class="fas fa-arrow-up"></i> 12.4%</span>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:linear-gradient(135deg,#f59e0b,#d97706);">
+                <i class="fas fa-tractor"></i>
+              </div>
+              <div class="kpi-data">
+                <span class="kpi-num" data-target="12830">0</span>
+                <p data-i18n="kpi_active_farmers">Active Farmers</p>
+                <span class="kpi-trend up"><i class="fas fa-arrow-up"></i> 8.1%</span>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);">
+                <i class="fas fa-indian-rupee-sign"></i>
+              </div>
+              <div class="kpi-data">
+                <span class="kpi-num" data-target="94">0</span><span class="kpi-unit">L</span>
+                <p data-i18n="kpi_monthly_rev">Monthly Revenue</p>
+                <span class="kpi-trend up"><i class="fas fa-arrow-up"></i> 22.7%</span>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:linear-gradient(135deg,#a855f7,#7e22ce);">
+                <i class="fas fa-tags"></i>
+              </div>
+              <div class="kpi-data">
+                <span class="kpi-num" data-target="348">0</span>
+                <p data-i18n="kpi_categories">Product Categories</p>
+                <span class="kpi-trend up"><i class="fas fa-arrow-up"></i> 5.3%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts Row -->
+          <div class="charts-row">
+            <!-- Bar Chart -->
+            <div class="chart-card">
+              <div class="chart-header">
+                <h4 data-i18n="chart_monthly_sales">Monthly Sales</h4>
+                <span class="chart-badge">2024</span>
+              </div>
+              <div class="bar-chart">
+                <div class="bar-group">
+                  <div class="bar" style="--h:55%;--c:#22c55e;"><span>Jan</span></div>
+                  <div class="bar" style="--h:72%;--c:#22c55e;"><span>Feb</span></div>
+                  <div class="bar" style="--h:61%;--c:#22c55e;"><span>Mar</span></div>
+                  <div class="bar" style="--h:88%;--c:#f59e0b;"><span>Apr</span></div>
+                  <div class="bar" style="--h:79%;--c:#22c55e;"><span>May</span></div>
+                  <div class="bar" style="--h:95%;--c:#22c55e;"><span>Jun</span></div>
+                  <div class="bar" style="--h:83%;--c:#22c55e;"><span>Jul</span></div>
+                  <div class="bar" style="--h:70%;--c:#22c55e;"><span>Aug</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Donut Chart -->
+            <div class="chart-card donut-card">
+              <div class="chart-header">
+                <h4 data-i18n="chart_categories">Product Categories</h4>
+                <span class="chart-badge">Live</span>
+              </div>
+              <div class="donut-wrap">
+                <svg viewBox="0 0 120 120" class="donut-svg">
+                  <circle cx="60" cy="60" r="48" fill="none" stroke="#1e3a2f" stroke-width="20"/>
+                  <circle cx="60" cy="60" r="48" fill="none" stroke="#22c55e" stroke-width="20"
+                          stroke-dasharray="120 182" stroke-dashoffset="0" class="donut-seg"/>
+                  <circle cx="60" cy="60" r="48" fill="none" stroke="#f59e0b" stroke-width="20"
+                          stroke-dasharray="80 222" stroke-dashoffset="-120" class="donut-seg"/>
+                  <circle cx="60" cy="60" r="48" fill="none" stroke="#3b82f6" stroke-width="20"
+                          stroke-dasharray="60 242" stroke-dashoffset="-200" class="donut-seg"/>
+                  <circle cx="60" cy="60" r="48" fill="none" stroke="#a855f7" stroke-width="20"
+                          stroke-dasharray="42 260" stroke-dashoffset="-260" class="donut-seg"/>
+                </svg>
+                <div class="donut-center">
+                  <strong>348</strong>
+                  <span>Products</span>
+                </div>
+              </div>
+              <div class="donut-legend">
+                <span><i style="background:#22c55e;"></i>Grains 40%</span>
+                <span><i style="background:#f59e0b;"></i>Vegetables 26%</span>
+                <span><i style="background:#3b82f6;"></i>Fruits 20%</span>
+                <span><i style="background:#a855f7;"></i>Organic 14%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Orders Table -->
+          <div class="orders-table-card">
+            <div class="chart-header">
+              <h4 data-i18n="chart_recent_orders">Recent Orders</h4>
+              <a href="#" class="view-all-link" data-i18n="dash_view_all">View All <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <table class="orders-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Product</th>
+                  <th>Buyer</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>#ORD-8821</td>
+                  <td>Basmati Rice (50kg)</td>
+                  <td>Metro Foods Ltd.</td>
+                  <td>₹3,100</td>
+                  <td><span class="status-badge delivered">Delivered</span></td>
+                </tr>
+                <tr>
+                  <td>#ORD-8820</td>
+                  <td>Alphonso Mangoes</td>
+                  <td>FreshMart Pune</td>
+                  <td>₹7,200</td>
+                  <td><span class="status-badge processing">Processing</span></td>
+                </tr>
+                <tr>
+                  <td>#ORD-8819</td>
+                  <td>Organic Veggies Mix</td>
+                  <td>GreenEats Mumbai</td>
+                  <td>₹4,750</td>
+                  <td><span class="status-badge pending">Pending</span></td>
+                </tr>
+                <tr>
+                  <td>#ORD-8818</td>
+                  <td>Sharbati Wheat (100kg)</td>
+                  <td>Bharat Agro Depot</td>
+                  <td>₹2,800</td>
+                  <td><span class="status-badge delivered">Delivered</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </main>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== AI FUTURE SCOPE SECTION ========== -->
+  <section id="ai-scope">
+    <div class="ai-bg-grid"></div>
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag ai-tag" data-i18n="ai_tag">Future Roadmap</span>
+        <h2 data-i18n="ai_heading">Powered by <span class="gradient-text-ai">Artificial Intelligence</span></h2>
+        <p data-i18n="ai_sub">The next evolution of AgroMarket — where technology meets the soil.</p>
+      </div>
+
+      <div class="ai-grid">
+
+        <div class="ai-card reveal">
+          <div class="ai-glow"></div>
+          <div class="ai-icon">
+            <i class="fas fa-brain"></i>
+          </div>
+          <h3 data-i18n="ai_price_title">AI Price Prediction</h3>
+          <p data-i18n="ai_price_desc">Machine learning models analyze seasonal trends, demand patterns, and weather data to predict optimal crop prices — maximizing farmer profits.</p>
+          <div class="ai-tag-list">
+            <span>ML Models</span>
+            <span>LSTM</span>
+            <span>Real-time</span>
+          </div>
+        </div>
+
+        <div class="ai-card reveal">
+          <div class="ai-glow"></div>
+          <div class="ai-icon">
+            <i class="fas fa-map-location-dot"></i>
+          </div>
+          <h3 data-i18n="ai_logistics_title">GPS Logistics Support</h3>
+          <p data-i18n="ai_logistics_desc">Real-time shipment tracking with intelligent route optimization, reducing delivery time by up to 40% and ensuring produce freshness.</p>
+          <div class="ai-tag-list">
+            <span>GPS Tracking</span>
+            <span>Route AI</span>
+            <span>ETA Predict</span>
+          </div>
+        </div>
+
+        <div class="ai-card reveal">
+          <div class="ai-glow"></div>
+          <div class="ai-icon">
+            <i class="fas fa-wand-magic-sparkles"></i>
+          </div>
+          <h3 data-i18n="ai_rec_title">Recommendation System</h3>
+          <p data-i18n="ai_rec_desc">Collaborative filtering engine suggests products, suppliers, and buyers based on purchase history, location, and behavioral patterns.</p>
+          <div class="ai-tag-list">
+            <span>Collab Filter</span>
+            <span>NLP</span>
+            <span>Personalized</span>
+          </div>
+        </div>
+
+        <div class="ai-card reveal">
+          <div class="ai-glow"></div>
+          <div class="ai-icon">
+            <i class="fas fa-microscope"></i>
+          </div>
+          <h3 data-i18n="ai_crop_title">Smart Crop Analytics</h3>
+          <p data-i18n="ai_crop_desc">Computer vision and satellite imagery analysis to detect crop health, predict yields, and alert farmers about potential diseases early.</p>
+          <div class="ai-tag-list">
+            <span>CV / CNN</span>
+            <span>Satellite</span>
+            <span>IoT Sensors</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== TESTIMONIALS SECTION ========== -->
+  <section id="testimonials">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag" data-i18n="test_tag">Success Stories</span>
+        <h2 data-i18n="test_heading">Voices from the <span class="gradient-text">Community</span></h2>
+        <p data-i18n="test_sub">Real experiences from farmers, buyers, and distributors using AgroMarket.</p>
+      </div>
+
+      <div class="testimonials-grid">
+
+        <div class="testimonial-card reveal">
+          <div class="testimonial-stars">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            <i class="fas fa-star"></i><i class="fas fa-star"></i>
+          </div>
+          <p class="testimonial-text">
+            "AgroMarket changed everything for me. I no longer depend on middlemen to sell my rice. I listed my produce, got buyer inquiries within hours, and received full payment before dispatch. My income has grown by 35% this season!"
+          </p>
+          <div class="testimonial-author">
+            <img src="https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=100&q=80" alt="Ramesh" loading="lazy" />
+            <div>
+              <strong>Ramesh Kumar</strong>
+              <span><i class="fas fa-tractor"></i> Farmer, Punjab</span>
+            </div>
+          </div>
+          <div class="testimonial-badge">
+            <i class="fas fa-leaf"></i> Farmer
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal featured-testimonial">
+          <div class="testimonial-stars">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            <i class="fas fa-star"></i><i class="fas fa-star"></i>
+          </div>
+          <p class="testimonial-text">
+            "We source produce for 12 restaurants across Bangalore. AgroMarket lets us compare prices, quality, and availability from dozens of farms in seconds. The order management system is flawless and our chefs always get the freshest ingredients."
+          </p>
+          <div class="testimonial-author">
+            <img src="https://images.unsplash.com/photo-1573497019236-17f8177b81e8?w=100&q=80" alt="Priya" loading="lazy" />
+            <div>
+              <strong>Priya Menon</strong>
+              <span><i class="fas fa-store"></i> Buyer, Bangalore</span>
+            </div>
+          </div>
+          <div class="testimonial-badge buyer">
+            <i class="fas fa-shopping-cart"></i> Buyer
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal">
+          <div class="testimonial-stars">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            <i class="fas fa-star"></i><i class="fas fa-star"></i>
+          </div>
+          <p class="testimonial-text">
+            "As a cold-chain distributor, tracking shipments used to be a nightmare. AgroMarket's logistics dashboard gives us real-time visibility of every delivery. We've reduced spoilage by 28% and our on-time delivery rate hit 97%!"
+          </p>
+          <div class="testimonial-author">
+            <img src="https://images.unsplash.com/photo-1552058544-f2b08422138a?w=100&q=80" alt="Suresh" loading="lazy" />
+            <div>
+              <strong>Suresh Mehta</strong>
+              <span><i class="fas fa-truck"></i> Distributor, Delhi</span>
+            </div>
+          </div>
+          <div class="testimonial-badge distributor">
+            <i class="fas fa-truck"></i> Distributor
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CONTACT SECTION ========== -->
+  <section id="contact">
+    <div class="container">
+      <div class="contact-wrap">
+
+        <!-- Left Info -->
+        <div class="contact-info reveal">
+          <span class="section-tag" data-i18n="contact_tag">Get In Touch</span>
+          <h2 data-i18n="contact_heading">Start Your <span class="gradient-text">Journey Today</span></h2>
+          <p data-i18n="contact_sub">Whether you're a farmer, buyer, or distributor — we're ready to help you grow. Reach out and our team will respond within 24 hours.</p>
+
+          <div class="contact-details">
+            <div class="contact-item">
+              <div class="contact-icon"><i class="fas fa-phone"></i></div>
+              <div>
+                <strong data-i18n="contact_call_us">Call Us</strong>
+                <span>+91 98765 43210</span>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+              <div>
+                <strong data-i18n="contact_email_us">Email Us</strong>
+                <span>hello@agromarket.in</span>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon"><i class="fas fa-map-pin"></i></div>
+              <div>
+                <strong data-i18n="contact_visit_us">Visit Us</strong>
+                <span>Tech Hub, Koramangala, Bengaluru – 560034</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-socials">
+            <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+
+        <!-- Right Form -->
+        <div class="contact-form-wrap reveal">
+          <div class="form-card">
+            <h3 data-i18n="contact_form_title">Send a Message</h3>
+            <div class="form-group">
+              <label for="name" data-i18n="contact_name_label">Full Name</label>
+              <div class="input-wrap">
+                <i class="fas fa-user"></i>
+                <input type="text" id="name" placeholder="e.g. Ramesh Kumar" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email" data-i18n="contact_email_label">Email Address</label>
+              <div class="input-wrap">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="email" placeholder="you@example.com" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="role" data-i18n="contact_role_label">I am a...</label>
+              <div class="input-wrap">
+                <i class="fas fa-user-tag"></i>
+                <select id="role">
+                  <option>Farmer</option>
+                  <option>Buyer</option>
+                  <option>Distributor</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="message" data-i18n="contact_msg_label">Message</label>
+              <textarea id="message" rows="4" placeholder="Tell us how we can help you..."></textarea>
+            </div>
+            <button class="btn-submit" id="submitBtn" data-i18n="contact_send_btn">
+              <i class="fas fa-paper-plane"></i> Send Message
+            </button>
+            <div id="form-success" class="form-success hidden">
+              <i class="fas fa-check-circle"></i> Message sent! We'll be in touch soon.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer id="footer">
+    <div class="footer-top">
+      <div class="container">
+        <div class="footer-grid">
+
+          <div class="footer-brand">
+            <div class="footer-logo">
+              <i class="fas fa-seedling"></i>
+              <span>Agro<strong>Market</strong></span>
+            </div>
+            <p data-i18n="footer_sub">India's smartest agricultural marketplace — where technology meets tradition to grow a better tomorrow.</p>
+            <div class="footer-socials">
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#"><i class="fab fa-youtube"></i></a>
+              <a href="#"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+
+          <div class="footer-col">
+            <h4 data-i18n="footer_platform">Platform</h4>
+            <ul>
+              <li><a href="#features">Features</a></li>
+              <li><a href="#marketplace">Marketplace</a></li>
+              <li><a href="#dashboard">Dashboard</a></li>
+              <li><a href="#ai-scope">AI Roadmap</a></li>
+              <li><a href="/admin" target="_blank" style="color:#60a5fa;font-weight:700;"><i class="fas fa-shield-halved"></i> Admin Portal</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h4 data-i18n="footer_users">Users</h4>
+            <ul>
+              <li><a href="#" data-i18n="footer_for_farmers">For Farmers</a></li>
+              <li><a href="#" data-i18n="footer_for_buyers">For Buyers</a></li>
+              <li><a href="#" data-i18n="footer_for_distributors">For Distributors</a></li>
+              <li><a href="#" data-i18n="footer_partner">Partner with Us</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h4 data-i18n="footer_company">Company</h4>
+            <ul>
+              <li><a href="#" data-i18n="footer_about_us">About Us</a></li>
+              <li><a href="#" data-i18n="footer_blog">Blog</a></li>
+              <li><a href="#" data-i18n="footer_press">Press Kit</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">
+        <p>© 2024 AgroMarket Portal · Built for B.E. Final Year Project Presentation · All Rights Reserved</p>
+        <div class="footer-bottom-links">
+          <a href="#" data-i18n="footer_privacy">Privacy Policy</a>
+          <a href="#" data-i18n="footer_terms">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button id="backToTop" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <!-- Main Script -->
+  <script src="api.js"></script>
+  <script src="script.js"></script>
+  <script src="app.js"></script>
+  <script src="ai.js"></script>
+</body>
+</html>

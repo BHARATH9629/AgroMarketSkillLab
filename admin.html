@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgroMarket — Master Administrator Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --bg: #0b1120;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #22c55e;
+      --primary-glow: rgba(34, 197, 94, 0.35);
+      --danger: #ef4444;
+      --accent: #38bdf8;
+      --warning: #f59e0b;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+    body { background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+
+    /* Topbar */
+    header {
+      background: #0f172a; border-bottom: 1px solid var(--card-border); padding: 14px 28px;
+      display: flex; align-items: center; justify-content: space-between; position: sticky; top:0; z-index: 50;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 1.25rem; color: #fff; text-decoration: none; }
+    .brand i { color: var(--primary); font-size: 1.4rem; }
+    .badge-dual {
+      background: rgba(34, 197, 94, 0.15); border: 1px solid var(--primary); color: #4ade80;
+      font-size: 0.72rem; padding: 3px 10px; border-radius: 50px; font-weight: 700;
+    }
+    .top-actions { display: flex; align-items: center; gap: 14px; }
+    .btn-top {
+      background: #1e293b; border: 1px solid var(--card-border); color: #f8fafc;
+      padding: 8px 16px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; cursor: pointer;
+      display: flex; align-items: center; gap: 6px; text-decoration: none; transition: all 0.2s;
+    }
+    .btn-top:hover { background: #334155; }
+    .btn-broadcast { background: linear-gradient(135deg, #e11d48, #f43f5e); border: none; }
+    .btn-broadcast:hover { filter: brightness(1.1); }
+
+    /* Layout */
+    .admin-layout { display: flex; flex: 1; height: calc(100vh - 65px); }
+    aside {
+      width: 260px; background: #0f172a; border-right: 1px solid var(--card-border);
+      display: flex; flex-direction: column; padding: 20px 14px; gap: 6px; flex-shrink: 0;
+    }
+    .nav-btn {
+      display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 10px;
+      color: var(--text-muted); font-size: 0.88rem; font-weight: 600; text-decoration: none;
+      cursor: pointer; border: none; background: transparent; width: 100%; text-align: left; transition: all 0.2s;
+    }
+    .nav-btn i { font-size: 1rem; width: 20px; }
+    .nav-btn:hover { background: #1e293b; color: #fff; }
+    .nav-btn.active { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
+
+    main { flex: 1; overflow-y: auto; padding: 28px; background: var(--bg); }
+    .page-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
+    .page-sub { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 24px; }
+
+    /* Stat Cards */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 26px; }
+    .stat-card {
+      background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 18px;
+      display: flex; flex-direction: column; gap: 8px; position: relative; overflow: hidden;
+    }
+    .stat-card::after {
+      content: ''; position: absolute; top:0; left:0; width: 4px; height: 100%;
+      background: var(--card-accent, var(--primary));
+    }
+    .stat-label { font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px; font-weight: 700; }
+    .stat-val { font-size: 1.8rem; font-weight: 900; color: #fff; }
+
+    /* Tables */
+    .card-wrap {
+      background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 22px;
+      margin-bottom: 26px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    .card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+    .card-title { font-size: 1.1rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; }
+    
+    table { width: 100%; border-collapse: collapse; font-size: 0.84rem; text-align: left; }
+    th { padding: 12px 10px; color: var(--text-muted); border-bottom: 1px solid var(--card-border); font-weight: 700; font-size: 0.76rem; text-transform: uppercase; }
+    td { padding: 12px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #e2e8f0; vertical-align: middle; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+
+    /* Badges & Buttons */
+    .pill { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+    .pill-green { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid #22c55e; }
+    .pill-red { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid #ef4444; }
+    .pill-blue { background: rgba(56,189,248,0.15); color: #38bdf8; border: 1px solid #38bdf8; }
+    .pill-amber { background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid #f59e0b; }
+
+    .act-btn {
+      padding: 5px 10px; border-radius: 6px; font-size: 0.74rem; font-weight: 700; cursor: pointer; border: none;
+      display: inline-flex; align-items: center; gap: 5px; transition: transform 0.1s;
+    }
+    .act-btn:hover { transform: scale(1.05); }
+    .act-btn-danger { background: #fee2e2; color: #b91c1c; }
+    .act-btn-success { background: #dcfce7; color: #15803d; }
+    .act-btn-blue { background: #e0f2fe; color: #0369a1; }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed; inset:0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 1000;
+      display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.25s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal-box {
+      background: #1e293b; border: 1px solid var(--card-border); border-radius: 20px; padding: 28px;
+      width: 90%; max-width: 520px; box-shadow: 0 30px 80px rgba(0,0,0,0.5); position: relative;
+    }
+
+    /* JSON & Code viewer */
+    pre.code-view {
+      background: #0f172a; border: 1px solid var(--card-border); border-radius: 10px; padding: 14px;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: #38bdf8; overflow-x: auto; max-height: 260px;
+    }
+
+    /* Auth Guard View */
+    #authOverlay {
+      position: fixed; inset: 0; background: #0b1120; z-index: 9999;
+      display: flex; align-items: center; justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ADMIN AUTH GUARD OVERLAY -->
+  <div id="authOverlay">
+    <div style="background:#1e293b;border:1px solid #334155;border-radius:24px;padding:36px;width:90%;max-width:440px;box-shadow:0 30px 80px rgba(0,0,0,0.5);text-align:center;">
+      <div style="width:72px;height:72px;border-radius:50%;background:rgba(34,197,94,0.15);border:2px solid #22c55e;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:#22c55e;font-size:2rem;">
+        <i class="fas fa-shield-halved"></i>
+      </div>
+      <h2 style="font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:6px;">Administrator Access</h2>
+      <p style="font-size:0.85rem;color:#94a3b8;margin-bottom:24px;">Restricted command center with full database governance</p>
+      
+      <div style="text-align:left;margin-bottom:14px;">
+        <label style="display:block;font-size:0.78rem;font-weight:700;color:#94a3b8;margin-bottom:6px;">Admin Email</label>
+        <input id="adminEmail" value="admin@agriproject.in" style="width:100%;padding:12px;background:#0f172a;border:1px solid #334155;border-radius:10px;color:#fff;font-size:0.9rem;outline:none;"/>
+      </div>
+      <div style="text-align:left;margin-bottom:20px;">
+        <label style="display:block;font-size:0.78rem;font-weight:700;color:#94a3b8;margin-bottom:6px;">Secret Password</label>
+        <input id="adminPass" type="password" value="admin123" style="width:100%;padding:12px;background:#0f172a;border:1px solid #334155;border-radius:10px;color:#fff;font-size:0.9rem;outline:none;"/>
+      </div>
+      <button onclick="handleAdminLogin()" style="width:100%;padding:13px;background:linear-gradient(135deg,#16a34a,#22c55e);border:none;border-radius:12px;color:#fff;font-size:0.95rem;font-weight:800;cursor:pointer;box-shadow:0 6px 20px rgba(34,197,94,0.3);margin-bottom:12px;">
+        <i class="fas fa-unlock"></i> Unlock Master Console
+      </button>
+      <a href="/" style="font-size:0.82rem;color:#38bdf8;text-decoration:none;"><i class="fas fa-arrow-left"></i> Return to Public Marketplace</a>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <a href="/admin" class="brand">
+      <i class="fas fa-seedling"></i>
+      <span>Agro<strong>Market</strong> <small style="font-size:0.75rem;color:#38bdf8;font-weight:600;">ADMIN</small></span>
+      <span class="badge-dual"><i class="fas fa-database"></i> MySQL + Mongo Dual Engine</span>
+    </a>
+    <div class="top-actions">
+      <button class="btn-top btn-broadcast" onclick="openBroadcastModal()">
+        <i class="fas fa-bullhorn"></i> Emergency Broadcast
+      </button>
+      <a href="/" class="btn-top" target="_blank">
+        <i class="fas fa-store"></i> Live Store
+      </a>
+      <button class="btn-top" onclick="adminLogout()">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN ADMIN LAYOUT -->
+  <div class="admin-layout">
+    <!-- Sidebar Navigation -->
+    <aside>
+      <button class="nav-btn active" onclick="switchTab('overview')">
+        <i class="fas fa-gauge-high"></i> Overview &amp; Telemetry
+      </button>
+      <button class="nav-btn" onclick="switchTab('users')">
+        <i class="fas fa-users-gear"></i> User Administration
+      </button>
+      <button class="nav-btn" onclick="switchTab('products')">
+        <i class="fas fa-boxes-stacked"></i> Produce Governance
+      </button>
+      <button class="nav-btn" onclick="switchTab('orders')">
+        <i class="fas fa-file-invoice-dollar"></i> Orders Command
+      </button>
+      <button class="nav-btn" onclick="switchTab('mongodb')">
+        <i class="fas fa-leaf"></i> MongoDB Collections
+      </button>
+      <button class="nav-btn" onclick="switchTab('system')">
+        <i class="fas fa-microchip"></i> System Health
+      </button>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main id="mainContent">
+      <!-- Injected via switchTab -->
+    </main>
+  </div>
+
+  <!-- BROADCAST MODAL -->
+  <div class="modal-overlay" id="broadcastModal">
+    <div class="modal-box">
+      <button onclick="closeModal('broadcastModal')" style="position:absolute;top:16px;right:16px;background:none;border:none;color:#94a3b8;font-size:1.2rem;cursor:pointer;">✕</button>
+      <h3 style="font-size:1.25rem;font-weight:800;color:#fff;margin-bottom:6px;"><i class="fas fa-bullhorn" style="color:#f43f5e;"></i> Broadcast Alert to All Users</h3>
+      <p style="font-size:0.82rem;color:#94a3b8;margin-bottom:18px;">Dispatches a high-priority banner notification to every registered farmer, buyer, and distributor.</p>
+      
+      <div style="margin-bottom:12px;">
+        <label style="display:block;font-size:0.78rem;font-weight:700;color:#94a3b8;margin-bottom:4px;">Alert Title</label>
+        <input id="bcTitle" placeholder="e.g. Weather Advisory: Heavy Rain Warning for Mandis" style="width:100%;padding:10px;background:#0f172a;border:1px solid #334155;border-radius:8px;color:#fff;font-size:0.85rem;outline:none;"/>
+      </div>
+      <div style="margin-bottom:18px;">
+        <label style="display:block;font-size:0.78rem;font-weight:700;color:#94a3b8;margin-bottom:4px;">Message Body</label>
+        <textarea id="bcMsg" rows="3" placeholder="Write announcement details..." style="width:100%;padding:10px;background:#0f172a;border:1px solid #334155;border-radius:8px;color:#fff;font-size:0.85rem;outline:none;resize:vertical;"></textarea>
+      </div>
+      <button onclick="dispatchBroadcast()" style="width:100%;padding:12px;background:linear-gradient(135deg,#e11d48,#f43f5e);border:none;border-radius:10px;color:#fff;font-weight:700;cursor:pointer;">
+        <i class="fas fa-paper-plane"></i> Send Emergency Broadcast
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const API = '/api';
+    let currentAdminToken = localStorage.getItem('agro_token') || '';
+
+    // Check auth on load
+    window.addEventListener('DOMContentLoaded', () => {
+      const user = JSON.parse(localStorage.getItem('agro_user') || 'null');
+      if (currentAdminToken && user && user.role === 'admin') {
+        document.getElementById('authOverlay').style.display = 'none';
+        loadOverview();
+      } else {
+        document.getElementById('authOverlay').style.display = 'flex';
+      }
+    });
+
+    async function handleAdminLogin() {
+      const email = document.getElementById('adminEmail').value.trim();
+      const password = document.getElementById('adminPass').value.trim();
+      try {
+        const res = await fetch(`${API}/auth/login`, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (data.success && data.user.role === 'admin') {
+          currentAdminToken = data.token;
+          localStorage.setItem('agro_token', data.token);
+          localStorage.setItem('agro_user', JSON.stringify(data.user));
+          document.getElementById('authOverlay').style.display = 'none';
+          loadOverview();
+        } else {
+          alert(data.message || 'Access Denied: Only administrators can unlock this portal.');
+        }
+      } catch (e) {
+        alert('Server unreachable: ' + e.message);
+      }
+    }
+
+    function adminLogout() {
+      localStorage.removeItem('agro_token');
+      localStorage.removeItem('agro_user');
+      location.reload();
+    }
+
+    function authHeader() {
+      return { 'Content-Type': 'application/json', 'Authorization': `Bearer ${currentAdminToken}` };
+    }
+
+    function openModal(id) { document.getElementById(id).classList.add('open'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+    /* Tab switcher */
+    function switchTab(tab) {
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+      if (tab === 'overview')  loadOverview();
+      if (tab === 'users')     loadUsers();
+      if (tab === 'products')  loadProducts();
+      if (tab === 'orders')    loadOrders();
+      if (tab === 'mongodb')   loadMongoDBDocs('chats');
+      if (tab === 'system')    loadSystemHealth();
+    }
+
+    /* ── TAB 1: OVERVIEW & TELEMETRY ── */
+    async function loadOverview() {
+      const main = document.getElementById('mainContent');
+      main.innerHTML = '<div style="color:#94a3b8;font-size:1.1rem;"><i class="fas fa-spinner fa-spin"></i> Polling Dual-Database Telemetry…</div>';
+
+      try {
+        const [dashRes, mongoRes, sysRes] = await Promise.all([
+          fetch(`${API}/dashboard/admin`, { headers: authHeader() }).then(r=>r.json()),
+          fetch(`${API}/analytics/stats`).then(r=>r.json()),
+          fetch(`${API}/admin/system`, { headers: authHeader() }).then(r=>r.json())
+        ]);
+
+        const s = dashRes.stats || {};
+        const m = mongoRes.stats || {};
+        const sys = sysRes.system || {};
+
+        main.innerHTML = `
+          <div class="page-title"><i class="fas fa-gauge-high" style="color:#22c55e;"></i> Master Operations Dashboard</div>
+          <div class="page-sub">Dual-Engine telemetry monitoring relational MySQL datastore and NoSQL MongoDB analytics stream</div>
+
+          <!-- KPI Cards -->
+          <div class="stats-grid">
+            <div class="stat-card" style="--card-accent:#22c55e;">
+              <span class="stat-label">Total Paid Revenue</span>
+              <span class="stat-val">₹${parseFloat(s.revenue||0).toLocaleString('en-IN')}</span>
+            </div>
+            <div class="stat-card" style="--card-accent:#38bdf8;">
+              <span class="stat-label">Registered Users</span>
+              <span class="stat-val">${(s.farmers||0)+(s.buyers||0)+(s.distributors||0)}</span>
+            </div>
+            <div class="stat-card" style="--card-accent:#f59e0b;">
+              <span class="stat-label">Total Orders</span>
+              <span class="stat-val">${s.orders || 0}</span>
+            </div>
+            <div class="stat-card" style="--card-accent:#a855f7;">
+              <span class="stat-label">Active Produce</span>
+              <span class="stat-val">${s.products || 0}</span>
+            </div>
+            <div class="stat-card" style="--card-accent:#10b981;">
+              <span class="stat-label">🍃 Mongo Page Views</span>
+              <span class="stat-val">${m.totalViews || 0}</span>
+            </div>
+            <div class="stat-card" style="--card-accent:#ec4899;">
+              <span class="stat-label">🤖 AI Queries Logged</span>
+              <span class="stat-val">${m.totalChats || 0}</span>
+            </div>
+          </div>
+
+          <!-- Telemetry Row -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:26px;">
+            <div class="card-wrap">
+              <div class="card-head">
+                <span class="card-title"><i class="fas fa-server" style="color:#38bdf8;"></i> Host &amp; Hardware Telemetry</span>
+                <span class="pill pill-green">RUNNING</span>
+              </div>
+              <table style="font-size:0.8rem;">
+                <tr><td style="color:#94a3b8;">Node Runtime</td><td><strong>${sys.nodeVersion || 'v20+'}</strong> (${sys.platform || 'win32'})</td></tr>
+                <tr><td style="color:#94a3b8;">Server Uptime</td><td><strong>${Math.floor((sys.uptimeSeconds||0)/60)} mins</strong></td></tr>
+                <tr><td style="color:#94a3b8;">Memory Allocated (RSS)</td><td><strong>${sys.memoryUsageMb || 0} MB</strong></td></tr>
+                <tr><td style="color:#94a3b8;">Free System RAM</td><td><strong>${sys.freeMemoryMb || 0} MB / ${sys.totalMemoryMb || 0} MB</strong></td></tr>
+              </table>
+            </div>
+
+            <div class="card-wrap">
+              <div class="card-head">
+                <span class="card-title"><i class="fas fa-leaf" style="color:#22c55e;"></i> MongoDB Analytics State</span>
+                <span class="pill pill-green">${m.connected !== false ? 'ONLINE' : 'OFFLINE'}</span>
+              </div>
+              <table style="font-size:0.8rem;">
+                <tr><td style="color:#94a3b8;">Database Name</td><td><code>agrimarket_analytics</code></td></tr>
+                <tr><td style="color:#94a3b8;">Search Inquiries Logged</td><td><strong>${m.totalSearches || 0}</strong></td></tr>
+                <tr><td style="color:#94a3b8;">Feedback &amp; Inquiries</td><td><strong>${m.totalContacts || 0}</strong></td></tr>
+                <tr><td style="color:#94a3b8;">Top Search Query</td><td><span class="pill pill-blue">${m.topSearches?.[0]?.query || 'None yet'}</span></td></tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- Recent Orders -->
+          <div class="card-wrap">
+            <div class="card-head">
+              <span class="card-title"><i class="fas fa-cart-shopping" style="color:#f59e0b;"></i> Recent Transaction Log</span>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Order ID</th><th>Buyer</th><th>Amount</th><th>Status</th><th>Payment</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${(dashRes.recentOrders || []).map(o => `
+                  <tr>
+                    <td><strong>#ORD-${o.id}</strong></td>
+                    <td>${o.buyer_name}</td>
+                    <td style="color:#4ade80;font-weight:700;">₹${o.total_amount}</td>
+                    <td><span class="pill pill-green">${o.status}</span></td>
+                    <td><span class="pill pill-blue">${o.payment_status}</span></td>
+                  </tr>`).join('')}
+              </tbody>
+            </table>
+          </div>`;
+      } catch (err) {
+        main.innerHTML = `<div style="color:#ef4444;padding:20px;background:#1e293b;border-radius:12px;">Failed to load overview: ${err.message}</div>`;
+      }
+    }
+
+    /* ── TAB 2: USER ADMINISTRATION (Special Powers) ── */
+    async function loadUsers() {
+      const main = document.getElementById('mainContent');
+      main.innerHTML = '<div style="color:#94a3b8;"><i class="fas fa-spinner fa-spin"></i> Loading User Datastore…</div>';
+
+      const res = await fetch(`${API}/admin/users`, { headers: authHeader() });
+      const data = await res.json();
+      if (!data.success) { main.innerHTML = `<div style="color:#ef4444;">${data.message}</div>`; return; }
+
+      main.innerHTML = `
+        <div class="page-title"><i class="fas fa-users-gear" style="color:#38bdf8;"></i> User Administration &amp; Access Control</div>
+        <div class="page-sub">Manage platform roles, ban/unban users, verify agricultural credentials, and audit member profiles.</div>
+
+        <div class="card-wrap">
+          <div class="card-head">
+            <span class="card-title">Registered Accounts (${data.count})</span>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th><th>Name &amp; Profile</th><th>Email</th><th>Role</th><th>Status</th><th>KYC Verified</th><th>Actions (Special Powers)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${data.users.map(u => `
+                <tr>
+                  <td>#${u.id}</td>
+                  <td>
+                    <strong>${u.full_name}</strong><br/>
+                    <small style="color:#94a3b8;">${u.farm_name ? '🌾 ' + u.farm_name : u.company_name ? '🏢 ' + u.company_name : u.city || 'India'}</small>
+                  </td>
+                  <td>${u.email}</td>
+                  <td>
+                    <select onchange="changeUserRole(${u.id}, this.value)" style="background:#0f172a;border:1px solid #334155;color:#fff;padding:4px 8px;border-radius:6px;font-size:0.75rem;">
+                      <option value="farmer" ${u.role==='farmer'?'selected':''}>Farmer</option>
+                      <option value="distributor" ${u.role==='distributor'?'selected':''}>Distributor / Company</option>
+                      <option value="buyer" ${u.role==='buyer'?'selected':''}>Buyer</option>
+                      <option value="admin" ${u.role==='admin'?'selected':''}>Admin</option>
+                    </select>
+                  </td>
+                  <td>
+                    <span class="pill ${u.is_active ? 'pill-green' : 'pill-red'}">${u.is_active ? 'Active' : 'Banned'}</span>
+                  </td>
+                  <td>
+                    <button onclick="toggleUserVerify(${u.id})" class="act-btn ${u.is_verified ? 'act-btn-success' : 'act-btn-blue'}">
+                      <i class="fas ${u.is_verified ? 'fa-check-circle' : 'fa-certificate'}"></i> ${u.is_verified ? 'Verified' : 'Verify'}
+                    </button>
+                  </td>
+                  <td>
+                    <button onclick="toggleUserStatus(${u.id})" class="act-btn ${u.is_active ? 'act-btn-danger' : 'act-btn-success'}">
+                      <i class="fas ${u.is_active ? 'fa-ban' : 'fa-check'}"></i> ${u.is_active ? 'Ban' : 'Unban'}
+                    </button>
+                    <button onclick="deleteUser(${u.id})" class="act-btn act-btn-danger" style="margin-left:4px;">
+                      <i class="fas fa-trash"></i> Delete
+                    </button>
+                  </td>
+                </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>`;
+    }
+
+    async function toggleUserStatus(id) {
+      const res = await fetch(`${API}/admin/users/${id}/toggle-status`, { method: 'PATCH', headers: authHeader() });
+      const data = await res.json();
+      alert(data.message);
+      loadUsers();
+    }
+    async function toggleUserVerify(id) {
+      const res = await fetch(`${API}/admin/users/${id}/toggle-verify`, { method: 'PATCH', headers: authHeader() });
+      const data = await res.json();
+      alert(data.message);
+      loadUsers();
+    }
+    async function changeUserRole(id, role) {
+      const res = await fetch(`${API}/admin/users/${id}/role`, {
+        method: 'PATCH', headers: authHeader(), body: JSON.stringify({ role })
+      });
+      const data = await res.json();
+      alert(data.message);
+      loadUsers();
+    }
+    async function deleteUser(id) {
+      if (!confirm(`Are you sure you want to permanently delete user #${id}?`)) return;
+      const res = await fetch(`${API}/admin/users/${id}`, { method: 'DELETE', headers: authHeader() });
+      const data = await res.json();
+      alert(data.message);
+      loadUsers();
+    }
+
+    /* ── TAB 3: PRODUCE GOVERNANCE ── */
+    async function loadProducts() {
+      const main = document.getElementById('mainContent');
+      main.innerHTML = '<div style="color:#94a3b8;"><i class="fas fa-spinner fa-spin"></i> Loading Marketplace Catalog…</div>';
+
+      const res = await fetch(`${API}/admin/products`, { headers: authHeader() });
+      const data = await res.json();
+
+      main.innerHTML = `
+        <div class="page-title"><i class="fas fa-boxes-stacked" style="color:#22c55e;"></i> Produce Governance &amp; Moderation</div>
+        <div class="page-sub">Review listings from farmers and distributors. Take down illicit listings or manage stock.</div>
+
+        <div class="card-wrap">
+          <div class="card-head">
+            <span class="card-title">All Listed Products (${data.count})</span>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Item</th><th>Seller</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${(data.products || []).map(p => `
+                <tr>
+                  <td><strong>${p.name}</strong></td>
+                  <td>${p.farmer_name} <small style="color:#94a3b8;">(${p.seller_role})</small></td>
+                  <td>${p.category_name}</td>
+                  <td style="color:#4ade80;font-weight:700;">₹${p.price_per_unit}/${p.unit||'kg'}</td>
+                  <td>${p.quantity_available} ${p.unit||'kg'}</td>
+                  <td><span class="pill ${p.is_available ? 'pill-green' : 'pill-red'}">${p.is_available ? 'Listed' : 'Taken Down'}</span></td>
+                  <td>
+                    <button onclick="toggleProduct(${p.id})" class="act-btn ${p.is_available ? 'act-btn-danger' : 'act-btn-success'}">
+                      <i class="fas fa-power-off"></i> ${p.is_available ? 'Take Down' : 'Approve'}
+                    </button>
+                    <button onclick="deleteProduct(${p.id})" class="act-btn act-btn-danger" style="margin-left:4px;">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>`;
+    }
+
+    async function toggleProduct(id) {
+      const res = await fetch(`${API}/admin/products/${id}/toggle-availability`, { method: 'PATCH', headers: authHeader() });
+      const data = await res.json();
+      alert(data.message);
+      loadProducts();
+    }
+    async function deleteProduct(id) {
+      if (!confirm('Permanently remove this item from the market?')) return;
+      const res = await fetch(`${API}/admin/products/${id}`, { method: 'DELETE', headers: authHeader() });
+      const data = await res.json();
+      alert(data.message);
+      loadProducts();
+    }
+
+    /* ── TAB 4: ORDERS COMMAND ── */
+    async function loadOrders() {
+      const main = document.getElementById('mainContent');
+      main.innerHTML = '<div style="color:#94a3b8;"><i class="fas fa-spinner fa-spin"></i> Loading Orders Database…</div>';
+
+      const res = await fetch(`${API}/admin/orders`, { headers: authHeader() });
+      const data = await res.json();
+
+      main.innerHTML = `
+        <div class="page-title"><i class="fas fa-file-invoice-dollar" style="color:#f59e0b;"></i> Orders &amp; Transaction Command</div>
+        <div class="page-sub">Audit orders, override settlement status, and inspect transaction fulfilment.</div>
+
+        <div class="card-wrap">
+          <div class="card-head">
+            <span class="card-title">All Customer Orders (${data.count})</span>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Order</th><th>Buyer</th><th>Amount</th><th>Status Override</th><th>Payment Status</th><th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${(data.orders || []).map(o => `
+                <tr>
+                  <td><strong>#ORD-${o.id}</strong></td>
+                  <td>${o.buyer_name}<br/><small style="color:#94a3b8;">${o.buyer_phone||''}</small></td>
+                  <td style="color:#4ade80;font-weight:700;">₹${o.total_amount}</td>
+                  <td>
+                    <select id="ordStatus_${o.id}" style="background:#0f172a;border:1px solid #334155;color:#fff;padding:4px 8px;border-radius:6px;font-size:0.75rem;">
+                      <option value="pending" ${o.status==='pending'?'selected':''}>Pending</option>
+                      <option value="processing" ${o.status==='processing'?'selected':''}>Processing</option>
+                      <option value="shipped" ${o.status==='shipped'?'selected':''}>Shipped</option>
+                      <option value="delivered" ${o.status==='delivered'?'selected':''}>Delivered</option>
+                      <option value="cancelled" ${o.status==='cancelled'?'selected':''}>Cancelled</option>
+                    </select>
+                  </td>
+                  <td>
+                    <select id="payStatus_${o.id}" style="background:#0f172a;border:1px solid #334155;color:#fff;padding:4px 8px;border-radius:6px;font-size:0.75rem;">
+                      <option value="unpaid" ${o.payment_status==='unpaid'?'selected':''}>Unpaid</option>
+                      <option value="paid" ${o.payment_status==='paid'?'selected':''}>Paid</option>
+                      <option value="refunded" ${o.payment_status==='refunded'?'selected':''}>Refunded</option>
+                    </select>
+                  </td>
+                  <td>
+                    <button onclick="updateOrderStatus(${o.id})" class="act-btn act-btn-success">
+                      <i class="fas fa-floppy-disk"></i> Save Override
+                    </button>
+                  </td>
+                </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>`;
+    }
+
+    async function updateOrderStatus(id) {
+      const status = document.getElementById(`ordStatus_${id}`).value;
+      const payment_status = document.getElementById(`payStatus_${id}`).value;
+      const res = await fetch(`${API}/admin/orders/${id}/status`, {
+        method: 'PATCH', headers: authHeader(), body: JSON.stringify({ status, payment_status })
+      });
+      const data = await res.json();
+      alert(data.message);
+      loadOrders();
+    }
+
+    /* ── TAB 5: MONGODB COLLECTIONS BROWSER ── */
+    async function loadMongoDBDocs(collection = 'chats') {
+      const main = document.getElementById('mainContent');
+      main.innerHTML = `
+        <div class="page-title"><i class="fas fa-leaf" style="color:#22c55e;"></i> MongoDB Collections Browser</div>
+        <div class="page-sub">Direct access to raw NoSQL documents for auditing AI conversations, searches, and activity feeds.</div>
+
+        <div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;">
+          <button onclick="loadMongoDBDocs('chats')" class="act-btn ${collection==='chats'?'act-btn-success':'btn-top'}">💬 AI Chat History</button>
+          <button onclick="loadMongoDBDocs('searches')" class="act-btn ${collection==='searches'?'act-btn-success':'btn-top'}">🔍 Search History</button>
+          <button onclick="loadMongoDBDocs('views')" class="act-btn ${collection==='views'?'act-btn-success':'btn-top'}">👁️ Page/Item Views</button>
+          <button onclick="loadMongoDBDocs('activities')" class="act-btn ${collection==='activities'?'act-btn-success':'btn-top'}">⚡ Activity Audit Feed</button>
+          <button onclick="loadMongoDBDocs('contacts')" class="act-btn ${collection==='contacts'?'act-btn-success':'btn-top'}">📬 Contact Submissions</button>
+          <button onclick="purgeMongoCollection('${collection}')" class="act-btn act-btn-danger" style="margin-left:auto;">
+            <i class="fas fa-fire"></i> Purge ${collection}
+          </button>
+        </div>
+
+        <div class="card-wrap" id="mongoDocArea">
+          <i class="fas fa-spinner fa-spin"></i> Querying MongoDB...
+        </div>`;
+
+      const res = await fetch(`${API}/admin/mongodb/${collection}`, { headers: authHeader() });
+      const data = await res.json();
+      const area = document.getElementById('mongoDocArea');
+
+      if (!data.success || !data.docs?.length) {
+        area.innerHTML = `<p style="color:#94a3b8;">No documents found in collection <code>${collection}</code>.</p>`;
+        return;
+      }
+
+      area.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+          <span style="font-weight:700;color:#fff;">Showing ${data.count} Document(s) from <code>agrimarket_analytics.${collection}</code></span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          ${data.docs.map(doc => `
+            <div style="background:#0f172a;border:1px solid #334155;border-radius:12px;padding:14px;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:0.75rem;color:#94a3b8;">
+                <span>ID: <code>${doc._id}</code></span>
+                <span>${new Date(doc.createdAt).toLocaleString()}</span>
+              </div>
+              <pre class="code-view">${JSON.stringify(doc, null, 2)}</pre>
+            </div>`).join('')}
+        </div>`;
+    }
+
+    async function purgeMongoCollection(collection) {
+      if (!confirm(`Warning: This will permanently delete all records in ${collection}. Continue?`)) return;
+      const res = await fetch(`${API}/admin/mongodb/${collection}`, { method: 'DELETE', headers: authHeader() });
+      const data = await res.json();
+      alert(data.message);
+      loadMongoDBDocs(collection);
+    }
+
+    /* ── TAB 6: SYSTEM HEALTH ── */
+    async function loadSystemHealth() {
+      const main = document.getElementById('mainContent');
+      main.innerHTML = '<div style="color:#94a3b8;"><i class="fas fa-spinner fa-spin"></i> Checking System Vital Signs…</div>';
+
+      const res = await fetch(`${API}/admin/system`, { headers: authHeader() });
+      const data = await res.json();
+
+      main.innerHTML = `
+        <div class="page-title"><i class="fas fa-microchip" style="color:#38bdf8;"></i> Host &amp; Database Architecture Health</div>
+        <div class="page-sub">Comprehensive hardware resource monitoring and datastore integrity checks.</div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+          <div class="card-wrap">
+            <h3 class="card-title" style="margin-bottom:14px;"><i class="fas fa-server"></i> Server Node Environment</h3>
+            <pre class="code-view">${JSON.stringify(data.system, null, 2)}</pre>
+          </div>
+          <div class="card-wrap">
+            <h3 class="card-title" style="margin-bottom:14px;"><i class="fas fa-database"></i> MySQL Relational Datastore</h3>
+            <pre class="code-view">${JSON.stringify(data.mysql, null, 2)}</pre>
+          </div>
+          <div class="card-wrap" style="grid-column:1/-1;">
+            <h3 class="card-title" style="margin-bottom:14px;"><i class="fas fa-leaf"></i> MongoDB NoSQL Document Collections</h3>
+            <pre class="code-view">${JSON.stringify(data.mongodb, null, 2)}</pre>
+          </div>
+        </div>`;
+    }
+
+    /* Broadcast Alert */
+    function openBroadcastModal() { openModal('broadcastModal'); }
+    async function dispatchBroadcast() {
+      const title = document.getElementById('bcTitle').value.trim();
+      const message = document.getElementById('bcMsg').value.trim();
+      if (!title || !message) { alert('Enter title and message'); return; }
+
+      const res = await fetch(`${API}/admin/broadcast`, {
+        method: 'POST', headers: authHeader(), body: JSON.stringify({ title, message })
+      });
+      const data = await res.json();
+      alert(data.message);
+      closeModal('broadcastModal');
+    }
+  </script>
+</body>
+</html>
