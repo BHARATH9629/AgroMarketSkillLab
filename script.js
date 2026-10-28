@@ -320,11 +320,28 @@ backToTopBtn.addEventListener('click', () => {
 /* ============================================
    11. DASHBOARD SIDEBAR – Active Link
    ============================================ */
-document.querySelectorAll('.dash-link').forEach(link => {
-  link.addEventListener('click', function (e) {
+window.switchDashboardTab = function(tabName) {
+  document.querySelectorAll(".dash-link").forEach(link => {
+    const t = link.getAttribute("data-tab");
+    if (t === tabName) link.classList.add("active");
+    else link.classList.remove("active");
+  });
+  document.querySelectorAll(".dash-panel").forEach(panel => {
+    panel.classList.remove("active");
+    panel.style.display = "none";
+  });
+  const activePanel = document.getElementById("dash-panel-" + tabName);
+  if (activePanel) {
+    activePanel.classList.add("active");
+    activePanel.style.display = "block";
+  }
+};
+
+document.querySelectorAll(".dash-link").forEach(link => {
+  link.addEventListener("click", function (e) {
     e.preventDefault();
-    document.querySelectorAll('.dash-link').forEach(l => l.classList.remove('active'));
-    this.classList.add('active');
+    const tab = this.getAttribute("data-tab") || "overview";
+    window.switchDashboardTab(tab);
   });
 });
 

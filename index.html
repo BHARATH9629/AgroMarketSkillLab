@@ -422,18 +422,21 @@
             <span>AgroMarket</span>
           </div>
           <nav class="dash-nav">
-            <a href="#" class="dash-link active"><i class="fas fa-th-large"></i> Overview</a>
-            <a href="#" class="dash-link"><i class="fas fa-users"></i> Farmers</a>
-            <a href="#" class="dash-link"><i class="fas fa-shopping-cart"></i> Orders</a>
-            <a href="#" class="dash-link"><i class="fas fa-boxes-stacked"></i> Products</a>
-            <a href="#" class="dash-link"><i class="fas fa-chart-bar"></i> Analytics</a>
-            <a href="#" class="dash-link"><i class="fas fa-truck"></i> Logistics</a>
-            <a href="#" class="dash-link"><i class="fas fa-cog"></i> Settings</a>
+            <a href="#dashboard" class="dash-link active" data-tab="overview" onclick="switchDashboardTab('overview')"><i class="fas fa-th-large"></i> Overview</a>
+            <a href="#dashboard" class="dash-link" data-tab="farmers" onclick="switchDashboardTab('farmers')"><i class="fas fa-users"></i> Farmers</a>
+            <a href="#dashboard" class="dash-link" data-tab="orders" onclick="switchDashboardTab('orders')"><i class="fas fa-shopping-cart"></i> Orders</a>
+            <a href="#dashboard" class="dash-link" data-tab="products" onclick="switchDashboardTab('products')"><i class="fas fa-boxes-stacked"></i> Products</a>
+            <a href="#dashboard" class="dash-link" data-tab="analytics" onclick="switchDashboardTab('analytics')"><i class="fas fa-chart-bar"></i> Analytics</a>
+            <a href="#dashboard" class="dash-link" data-tab="logistics" onclick="switchDashboardTab('logistics')"><i class="fas fa-truck"></i> Logistics</a>
+            <a href="#dashboard" class="dash-link" data-tab="settings" onclick="switchDashboardTab('settings')"><i class="fas fa-cog"></i> Settings</a>
           </nav>
         </aside>
 
         <!-- Main Dashboard Content -->
         <main class="dash-main">
+          <!-- TAB 1: OVERVIEW -->
+          <div id="dash-panel-overview" class="dash-panel active">
+
           <!-- KPI Cards -->
           <div class="kpi-grid">
             <div class="kpi-card">
@@ -580,6 +583,308 @@
               </tbody>
             </table>
           </div>
+        
+          </div>
+
+          <!-- TAB 2: FARMERS -->
+          <div id="dash-panel-farmers" class="dash-panel" style="display:none;">
+            <div class="orders-table-card">
+              <div class="chart-header">
+                <h4 style="color:var(--dark-800);"><i class="fas fa-users" style="color:var(--green-500);margin-right:8px;"></i> Registered Farmers Directory</h4>
+                <span class="chart-badge">12,830 Active</span>
+              </div>
+              <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.25rem;">
+                Audited list of agricultural producers, verified farm titles, and live crop inventory across Karnataka and neighboring states.
+              </p>
+              <table class="orders-table">
+                <thead>
+                  <tr>
+                    <th>Farmer Name</th>
+                    <th>Farm Name &amp; Location</th>
+                    <th>Farming Type</th>
+                    <th>Rating</th>
+                    <th>Total Sales</th>
+                    <th>KYC Verification</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Ramesh Gowda</strong></td>
+                    <td>Gowda Organic Paddys, Mandya, KA</td>
+                    <td><span class="status-badge delivered">Organic</span></td>
+                    <td>⭐ 4.9 (124 reviews)</td>
+                    <td style="color:#22c55e;font-weight:700;">₹4,82,000</td>
+                    <td><span class="status-badge delivered"><i class="fas fa-check-circle"></i> Verified</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Basavaraj Patil</strong></td>
+                    <td>Kaveri Wheat Estates, Dharwad, KA</td>
+                    <td><span class="status-badge processing">Conventional</span></td>
+                    <td>⭐ 4.8 (89 reviews)</td>
+                    <td style="color:#22c55e;font-weight:700;">₹3,40,500</td>
+                    <td><span class="status-badge delivered"><i class="fas fa-check-circle"></i> Verified</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Lakshmi Devi</strong></td>
+                    <td>Sri Lakshmi Horticulture, Hassan, KA</td>
+                    <td><span class="status-badge delivered">Organic</span></td>
+                    <td>⭐ 5.0 (210 reviews)</td>
+                    <td style="color:#22c55e;font-weight:700;">₹6,15,000</td>
+                    <td><span class="status-badge delivered"><i class="fas fa-check-circle"></i> Verified</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Suresh Kumar</strong></td>
+                    <td>Sahyadri Spices, Shimoga, KA</td>
+                    <td><span class="status-badge delivered">Organic Natural</span></td>
+                    <td>⭐ 4.7 (65 reviews)</td>
+                    <td style="color:#22c55e;font-weight:700;">₹2,90,000</td>
+                    <td><span class="status-badge processing"><i class="fas fa-clock"></i> In Review</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB 3: ORDERS -->
+          <div id="dash-panel-orders" class="dash-panel" style="display:none;">
+            <div class="orders-table-card">
+              <div class="chart-header">
+                <h4 style="color:var(--dark-800);"><i class="fas fa-shopping-cart" style="color:var(--green-500);margin-right:8px;"></i> Live Marketplace Orders</h4>
+                <span class="chart-badge">Live DB Synced</span>
+              </div>
+              <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.25rem;">
+                Real-time purchase orders placed by wholesale buyers, retail chains, and direct consumers.
+              </p>
+              <table class="orders-table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Buyer / Company</th>
+                    <th>Produce Items</th>
+                    <th>Amount</th>
+                    <th>Payment</th>
+                    <th>Order Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>#ORD-8821</strong></td>
+                    <td>Metro Foods Ltd, Bangalore</td>
+                    <td>Basmati Rice (50 kg)</td>
+                    <td style="color:#22c55e;font-weight:700;">₹3,100</td>
+                    <td><span class="status-badge delivered">UPI Paid</span></td>
+                    <td><span class="status-badge delivered">Delivered</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>#ORD-8820</strong></td>
+                    <td>FreshMart Retail, Pune</td>
+                    <td>Alphonso Mangoes (20 crates)</td>
+                    <td style="color:#22c55e;font-weight:700;">₹7,200</td>
+                    <td><span class="status-badge processing">Card Paid</span></td>
+                    <td><span class="status-badge processing">Processing</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>#ORD-8819</strong></td>
+                    <td>GreenEats Organics, Mumbai</td>
+                    <td>Organic Veggies Mix (100 kg)</td>
+                    <td style="color:#22c55e;font-weight:700;">₹4,750</td>
+                    <td><span class="status-badge pending">COD</span></td>
+                    <td><span class="status-badge pending">Pending</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>#ORD-8818</strong></td>
+                    <td>Bharat Agro Depot, Mysore</td>
+                    <td>Sharbati Wheat (100 kg)</td>
+                    <td style="color:#22c55e;font-weight:700;">₹2,800</td>
+                    <td><span class="status-badge delivered">NetBanking</span></td>
+                    <td><span class="status-badge delivered">Delivered</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>#ORD-8817</strong></td>
+                    <td>Anand Supermarket, Tumkur</td>
+                    <td>Turmeric Rhizomes (40 kg)</td>
+                    <td style="color:#22c55e;font-weight:700;">₹5,400</td>
+                    <td><span class="status-badge delivered">UPI Paid</span></td>
+                    <td><span class="status-badge delivered">Delivered</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB 4: PRODUCTS -->
+          <div id="dash-panel-products" class="dash-panel" style="display:none;">
+            <div class="orders-table-card">
+              <div class="chart-header">
+                <h4 style="color:var(--dark-800);"><i class="fas fa-boxes-stacked" style="color:var(--green-500);margin-right:8px;"></i> Live Produce Catalog</h4>
+                <span class="chart-badge">348 Live Listings</span>
+              </div>
+              <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.25rem;">
+                Current farmer agricultural listings with real-time stock balances and mandi pricing.
+              </p>
+              <table class="orders-table">
+                <thead>
+                  <tr>
+                    <th>Produce Name</th>
+                    <th>Category</th>
+                    <th>Producer Farmer</th>
+                    <th>Price / Unit</th>
+                    <th>Available Stock</th>
+                    <th>Quality</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Premium Sona Masoori Rice</strong></td>
+                    <td>Grains &amp; Cereals</td>
+                    <td>Ramesh Gowda (Mandya)</td>
+                    <td style="color:#22c55e;font-weight:700;">₹55 / kg</td>
+                    <td>450 kg</td>
+                    <td><span class="status-badge delivered">Organic Certified</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Sharbati Golden Wheat</strong></td>
+                    <td>Grains &amp; Cereals</td>
+                    <td>Basavaraj Patil (Dharwad)</td>
+                    <td style="color:#22c55e;font-weight:700;">₹42 / kg</td>
+                    <td>1,200 kg</td>
+                    <td><span class="status-badge processing">Grade A</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Fresh Farm Tomatoes</strong></td>
+                    <td>Fresh Vegetables</td>
+                    <td>Kiran Patel (Kolar)</td>
+                    <td style="color:#22c55e;font-weight:700;">₹28 / kg</td>
+                    <td>600 kg</td>
+                    <td><span class="status-badge delivered">Farm Fresh</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Alphonso Ratnagiri Mangoes</strong></td>
+                    <td>Fresh Fruits</td>
+                    <td>Lakshmi Devi (Hassan)</td>
+                    <td style="color:#22c55e;font-weight:700;">₹320 / dozen</td>
+                    <td>150 dozen</td>
+                    <td><span class="status-badge delivered">Export Quality</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB 5: ANALYTICS -->
+          <div id="dash-panel-analytics" class="dash-panel" style="display:none;">
+            <div class="kpi-grid">
+              <div class="kpi-card">
+                <div class="kpi-icon" style="background:linear-gradient(135deg,#06b6d4,#0891b2);"><i class="fas fa-search"></i></div>
+                <div class="kpi-data"><span class="kpi-num">14,290</span><p>Search Telemetry</p><span class="kpi-trend up"><i class="fas fa-arrow-up"></i> 18%</span></div>
+              </div>
+              <div class="kpi-card">
+                <div class="kpi-icon" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9);"><i class="fas fa-robot"></i></div>
+                <div class="kpi-data"><span class="kpi-num">3,840</span><p>AI Advisory Queries</p><span class="kpi-trend up"><i class="fas fa-arrow-up"></i> 44%</span></div>
+              </div>
+              <div class="kpi-card">
+                <div class="kpi-icon" style="background:linear-gradient(135deg,#10b981,#059669);"><i class="fas fa-mobile-screen"></i></div>
+                <div class="kpi-data"><span class="kpi-num">72%</span><p>Mobile Device Share</p><span class="kpi-trend up"><i class="fas fa-arrow-up"></i> Android AI2</span></div>
+              </div>
+              <div class="kpi-card">
+                <div class="kpi-icon" style="background:linear-gradient(135deg,#f43f5e,#be123c);"><i class="fas fa-database"></i></div>
+                <div class="kpi-data"><span class="kpi-num">MongoDB</span><p>Analytics Cluster</p><span class="kpi-trend up"><i class="fas fa-check"></i> Connected</span></div>
+              </div>
+            </div>
+            <div class="orders-table-card">
+              <div class="chart-header">
+                <h4 style="color:var(--dark-800);"><i class="fas fa-chart-pie" style="color:var(--green-500);margin-right:8px;"></i> MongoDB Real-Time Query Telemetry</h4>
+                <span class="chart-badge">agrimarket_analytics</span>
+              </div>
+              <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1rem;">Top searched agricultural terms stored in MongoDB collections:</p>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:1.5rem;">
+                <span class="status-badge delivered" style="font-size:0.85rem;padding:6px 14px;">🌾 Rice / ಭತ್ತ (4,120)</span>
+                <span class="status-badge delivered" style="font-size:0.85rem;padding:6px 14px;">🍅 Tomato / ಟೊಮೆಟೊ (3,280)</span>
+                <span class="status-badge processing" style="font-size:0.85rem;padding:6px 14px;">🌽 Maize / ಮೆಕ್ಕೆಜೋಳ (2,410)</span>
+                <span class="status-badge processing" style="font-size:0.85rem;padding:6px 14px;">🧅 Onion / ಈರುಳ್ಳಿ (1,980)</span>
+                <span class="status-badge pending" style="font-size:0.85rem;padding:6px 14px;">🌿 Organic Fertilizer (1,450)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 6: LOGISTICS -->
+          <div id="dash-panel-logistics" class="dash-panel" style="display:none;">
+            <div class="orders-table-card">
+              <div class="chart-header">
+                <h4 style="color:var(--dark-800);"><i class="fas fa-truck-fast" style="color:var(--green-500);margin-right:8px;"></i> Farm-to-Fork Logistics &amp; Dispatch</h4>
+                <span class="chart-badge">Active Dispatches</span>
+              </div>
+              <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.25rem;">
+                Live delivery fleets transporting fresh harvest from rural collection centers to urban hubs.
+              </p>
+              <table class="orders-table">
+                <thead>
+                  <tr>
+                    <th>Tracking #</th>
+                    <th>Route</th>
+                    <th>Carrier / Driver</th>
+                    <th>Produce Weight</th>
+                    <th>Status</th>
+                    <th>Estimated Arrival</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>AGRO-TRK-7712</strong></td>
+                    <td>Mandya Hub ➔ Bangalore APMC</td>
+                    <td>Suresh K. (KA-11-E-4210)</td>
+                    <td>2,400 kg</td>
+                    <td><span class="status-badge processing"><i class="fas fa-truck"></i> In Transit</span></td>
+                    <td>Today, 2:30 PM</td>
+                  </tr>
+                  <tr>
+                    <td><strong>AGRO-TRK-7711</strong></td>
+                    <td>Kolar Cluster ➔ Whitefield Hub</td>
+                    <td>Manjunath (KA-07-T-9821)</td>
+                    <td>1,150 kg</td>
+                    <td><span class="status-badge delivered"><i class="fas fa-check"></i> Delivered</span></td>
+                    <td>Completed (10:15 AM)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>AGRO-TRK-7710</strong></td>
+                    <td>Dharwad Depot ➔ Hubli Market</td>
+                    <td>Irfan Khan (KA-25-A-1109)</td>
+                    <td>3,800 kg</td>
+                    <td><span class="status-badge processing"><i class="fas fa-truck"></i> Dispatched</span></td>
+                    <td>Today, 6:00 PM</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB 7: SETTINGS -->
+          <div id="dash-panel-settings" class="dash-panel" style="display:none;">
+            <div class="orders-table-card">
+              <div class="chart-header">
+                <h4 style="color:var(--dark-800);"><i class="fas fa-sliders" style="color:var(--green-500);margin-right:8px;"></i> System &amp; Marketplace Settings</h4>
+                <span class="chart-badge">Configuration</span>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:1.5rem;margin-top:1rem;">
+                <div style="background:var(--surface);border:1px solid var(--border-light);padding:1.25rem;border-radius:12px;">
+                  <h5 style="margin-bottom:8px;color:var(--dark-800);"><i class="fas fa-globe"></i> Localization &amp; Currency</h5>
+                  <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:12px;">Supported: English, ಕನ್ನಡ (Kannada). Currency: Indian Rupee (₹ INR).</p>
+                  <span class="status-badge delivered">Bilingual Mode Active</span>
+                </div>
+                <div style="background:var(--surface);border:1px solid var(--border-light);padding:1.25rem;border-radius:12px;">
+                  <h5 style="margin-bottom:8px;color:var(--dark-800);"><i class="fas fa-robot"></i> AI Engine Configuration</h5>
+                  <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:12px;">Model: Groq LLaMA 3.3 70B Versatile. Temperature: 0.6. Status: Online.</p>
+                  <span class="status-badge delivered">Groq API Connected</span>
+                </div>
+                <div style="background:var(--surface);border:1px solid var(--border-light);padding:1.25rem;border-radius:12px;">
+                  <h5 style="margin-bottom:8px;color:var(--dark-800);"><i class="fas fa-database"></i> Database Persistence</h5>
+                  <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:12px;">MySQL 8.0 (ACID Transactions) + MongoDB (Analytics &amp; Logs).</p>
+                  <span class="status-badge delivered">Dual Database Synced</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </main>
       </div>
     </div>
