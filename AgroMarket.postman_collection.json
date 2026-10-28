@@ -1,0 +1,323 @@
+{
+  "info": {
+    "_postman_id": "a9e8b7c6-d5f4-4a3b-8c2e-1f0e9d8c7b6a",
+    "name": "AgroMarket REST API Collection",
+    "description": "Comprehensive Postman Collection for AgroMarket - Smart Agricultural Marketplace Portal, covering Authentication, Products, AI Crop Advisory, MIT App Inventor IoT, and MongoDB Analytics.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "0. System & Health",
+      "item": [
+        {
+          "name": "Server Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            },
+            "description": "Verifies server uptime, MySQL and MongoDB connection status."
+          }
+        }
+      ]
+    },
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Register Farmer / Buyer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"Ramesh Gowda\",\n  \"email\": \"ramesh.farmer@example.com\",\n  \"password\": \"farmer123\",\n  \"phone\": \"9876543210\",\n  \"role\": \"farmer\",\n  \"city\": \"Mandya\",\n  \"state\": \"Karnataka\",\n  \"address\": \"Main Road, Mandya Rural\",\n  \"pincode\": \"571401\",\n  \"farm_name\": \"Gowda Organic Farms\",\n  \"farming_type\": \"organic\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login User (Auto-saves JWT Token)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.token) {",
+                  "    pm.collectionVariables.set('token', json.token);",
+                  "    console.log('JWT Token successfully saved to collection variable!');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"farmer@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Get Current User Profile (/auth/me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Products & Marketplace",
+      "item": [
+        {
+          "name": "Get All Products (With Filters)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products?page=1&limit=12&is_organic=true",
+              "host": ["{{baseUrl}}"],
+              "path": ["products"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "12" },
+                { "key": "is_organic", "value": "true" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Single Product By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "1"]
+            }
+          }
+        },
+        {
+          "name": "Add Produce (Farmer Only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Fresh Sona Masoori Rice\",\n  \"category_id\": 1,\n  \"price_per_unit\": 55.00,\n  \"unit\": \"kg\",\n  \"stock_quantity\": 500,\n  \"min_order_quantity\": 10,\n  \"is_organic\": true,\n  \"description\": \"Directly harvested premium pesticide-free organic rice from Mandya paddies.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["products"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. AI Crop Advisory (Groq LLaMA)",
+      "item": [
+        {
+          "name": "Ask AI Crop Advisor (English)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"What is the recommended fertilizer for tomato blight in black soil?\",\n  \"language\": \"en\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ai/chat",
+              "host": ["{{baseUrl}}"],
+              "path": ["ai", "chat"]
+            }
+          }
+        },
+        {
+          "name": "Ask AI Crop Advisor (ಕನ್ನಡ / Kannada)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"ರಾಗಿ ಬೆಳೆಗೆ ಯಾವ ಕಾಲದಲ್ಲಿ ನೀರು ಹಾಯಿಸಬೇಕು?\",\n  \"language\": \"kn\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ai/chat",
+              "host": ["{{baseUrl}}"],
+              "path": ["ai", "chat"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. MIT App Inventor Mobile API",
+      "item": [
+        {
+          "name": "Track Order Plain Text (MIT Endpoint)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/mit/order/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["mit", "order", "1"]
+            },
+            "description": "Returns plain text formatted card designed for MIT App Inventor Web1.Get component."
+          }
+        },
+        {
+          "name": "MIT Health & Test Endpoint",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/mit/test",
+              "host": ["{{baseUrl}}"],
+              "path": ["mit", "test"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. MongoDB Analytics & Telemetry",
+      "item": [
+        {
+          "name": "Log Page / Product View",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": 1,\n  \"productName\": \"Organic Tomatoes\",\n  \"page\": \"product_details\",\n  \"action\": \"view\",\n  \"device\": \"desktop\",\n  \"duration\": 15\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/analytics/view",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "view"]
+            }
+          }
+        },
+        {
+          "name": "Get MongoDB Chat Logs (Admin API)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/mongodb/chats",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "mongodb", "chats"]
+            }
+          }
+        },
+        {
+          "name": "Get MongoDB Traffic Logs (Admin API)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/mongodb/views",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "mongodb", "views"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Orders & Cart",
+      "item": [
+        {
+          "name": "Get My Orders",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/orders/my-orders",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders", "my-orders"]
+            }
+          }
+        },
+        {
+          "name": "Get Cart Items",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/cart",
+              "host": ["{{baseUrl}}"],
+              "path": ["cart"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
